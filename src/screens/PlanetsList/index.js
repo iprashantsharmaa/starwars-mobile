@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import Screen from '../../components/Screen';
@@ -12,6 +12,7 @@ import LoadingSkeleton from './components/PlanetCard/LoadingSkeleton';
 import { logoutUser } from '../../redux/slices/authenticateSlice';
 
 export default function PlanetsList({ navigation }) {
+  const listRef = useRef(null);
   const dispatch = useDispatch();
   const [maxPopulation, setMaxPopulation] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -21,6 +22,7 @@ export default function PlanetsList({ navigation }) {
   useEffect(() => {
     if (searchQuery && !!planets.length) {
       setMaxPopulation(Number(planets[0]?.population) ?? 0);
+      listRef.current.scrollToOffset({ animated: true, y: 0 });
     }
   }, [planets, searchQuery]);
 
@@ -40,13 +42,14 @@ export default function PlanetsList({ navigation }) {
         style={styles.searchInput}
         value={searchQuery}
         onChange={setSearchQuery}
-        placeholder="Search planets here"
+        placeholder="Search Planets Name"
         id="search"
         type="search"
       />
       {isLoading && <LoadingSkeleton count={4} />}
       {!isLoading && (
         <FlatList
+          ref={listRef}
           style={styles.list}
           keyExtractor={(item, index) => `${item.name}${index}`}
           data={planets}

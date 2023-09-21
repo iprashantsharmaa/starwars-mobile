@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import dayjs from 'dayjs';
 import { colors, sizes } from '../../../../utils/constants';
+import { truncate } from '../../../../utils/helper';
 
 function PlanetCard({ planet, maxPopulation }) {
   const { name, population, createdAt, climate, gravity, diameter } =
@@ -29,18 +30,20 @@ function PlanetCard({ planet, maxPopulation }) {
             </View>
             <View style={[styles.row, styles.alignItems_center, styles.mt_6]}>
               <Text style={styles.label}>Climate : </Text>
-              <Text style={[styles.smallText]}>{climate?.toUpperCase()}</Text>
+              <Text style={[styles.smallText]}>
+                {truncate(climate?.toUpperCase())}
+              </Text>
             </View>
           </View>
           <View style={styles.row_between}>
             <View style={[styles.row, styles.alignItems_center, styles.mt_6]}>
               <Text style={styles.label}>Gravity : </Text>
-              <Text style={[styles.smallText]}>{gravity}</Text>
+              <Text style={[styles.smallText]}>{truncate(gravity)}</Text>
             </View>
             <View style={[styles.row, styles.alignItems_center, styles.mt_6]}>
               <Text style={styles.label}>Diameter : </Text>
               <Text style={[styles.smallText]}>
-                {Number(diameter).toLocaleString()}
+                {diameter >= 0 ? Number(diameter).toLocaleString() : 0}
               </Text>
             </View>
           </View>
