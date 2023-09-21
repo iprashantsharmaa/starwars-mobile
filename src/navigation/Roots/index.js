@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../../screens/Login';
 import PlanetsList from '../../screens/PlanetsList';
-import useAuthUser from '../../hooks/useAuthUser';
+import { useSelector } from 'react-redux';
+import { createNavigationContainerRef } from '@react-navigation/native';
 
 const Stack = createNativeStackNavigator();
+export const navigationRef = createNavigationContainerRef();
 function Roots() {
-  const { isLoggedIn, loading } = useAuthUser();
+  const { isAuthenticated, loading } = useSelector(state => state.authenticate);
+
+  useEffect(() => {
+    if (navigationRef.isReady() && !isAuthenticated) {
+      navigationRef.reset({
+        routes: [{ name: 'Login' }],
+      });
+    } else {
+      navigationRef.reset({
+        routes: [{ name: 'PlanetsList' }],
+      });
+    }
+  }, [isAuthenticated]);
 
   if (loading) {
     return null;
@@ -14,7 +28,7 @@ function Roots() {
 
   return (
     <Stack.Navigator>
-      {!isLoggedIn && (
+      {!isAuthenticated && (
         <>
           <Stack.Screen
             name="Login"
@@ -32,7 +46,7 @@ function Roots() {
           />
         </>
       )}
-      {isLoggedIn && (
+      {isAuthenticated && (
         <>
           <Stack.Screen
             name="PlanetsList"

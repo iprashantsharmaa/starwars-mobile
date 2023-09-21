@@ -13,7 +13,6 @@ export const loginUser = createAsyncThunk('loginUser', async ({ data }) => {
   try {
     const response = await authenticateUser(data);
     if (response.status === 'success') {
-      await AsyncStorage.setItem('user', response?.user);
       return {
         isAuthenticated: true,
       };
@@ -22,9 +21,20 @@ export const loginUser = createAsyncThunk('loginUser', async ({ data }) => {
     throw e.message;
   }
 });
+export const logoutUser = createAsyncThunk('logoutUser', async () => {
+  try {
+    await AsyncStorage.removeItem('user');
+    return {
+      isAuthenticated: false,
+    };
+  } catch (e) {
+    console.log(e, 'Error');
+    throw 'Something went wrong, Try again!';
+  }
+});
 
-const authenticateUserSlice = createSlice({
-  name: 'authenticateUser',
+const authUserSlice = createSlice({
+  name: 'auth',
   initialState: initialState,
   reducers: {},
   extraReducers: builder => {
@@ -41,8 +51,20 @@ const authenticateUserSlice = createSlice({
         state.hasError = true;
         state.errorMessage = action?.error?.message;
         state.loading = false;
+      })
+      .addCase(logoutUser.pending, state => {
+        state.loading = true;
+        state.hasError = undefined;
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        state.isAuthenticated = false;
+        state.loading = false;
+      })
+      .addCase(logoutUser.rejected, state => {
+        state.hasError = true;
+        state.loading = false;
       });
   },
 });
 
-export default authenticateUserSlice.reducer;
+export default authUserSlice.reducer;

@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-  Platform,
-} from 'react-native';
-
-const IS_IOS = Platform.OS === 'ios';
+import { SafeAreaView, StatusBar, StyleSheet, View } from 'react-native';
+import { IS_IOS } from '../../utils/helper';
 
 const STATUS_BAR_HEIGHT = IS_IOS ? 60 : StatusBar.currentHeight;
 

@@ -1,14 +1,17 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import Screen from '../../components/Screen';
 import LoginForm from './ components/loginForm';
 import { colors, sizes } from '../../utils/constants';
+import { IS_IOS } from '../../utils/helper';
 export default function Login({ navigation }) {
   return (
     <Screen>
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={IS_IOS ? 'padding' : 'height'}
+        style={styles.container}>
         <LoginForm navigation={navigation} />
-      </View>
+      </KeyboardAvoidingView>
     </Screen>
   );
 }

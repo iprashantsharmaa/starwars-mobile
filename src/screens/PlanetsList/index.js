@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Screen from '../../components/Screen';
 import useGetPlanets from '../../hooks/useGetPlanets';
 import PlanetCard from './components/PlanetCard';
@@ -9,8 +9,10 @@ import Button from '../../components/Button';
 import { buttonVariants, colors, sizes } from '../../utils/constants';
 import { LogoutIcon } from '../../assets/icons/logoutIcon';
 import LoadingSkeleton from './components/PlanetCard/LoadingSkeleton';
+import { logoutUser } from '../../redux/slices/authenticateSlice';
 
 export default function PlanetsList({ navigation }) {
+  const dispatch = useDispatch();
   const [maxPopulation, setMaxPopulation] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -29,10 +31,7 @@ export default function PlanetsList({ navigation }) {
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem('user');
-    navigation.reset({
-      routes: [{ name: 'Login' }],
-    });
+    dispatch(logoutUser());
   };
 
   return (

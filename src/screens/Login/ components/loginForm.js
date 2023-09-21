@@ -14,9 +14,7 @@ const defaultValues = {
 };
 
 function LoginForm({ navigation }) {
-  const { isAuthenticated, hasError, errorMessage } = useSelector(
-    state => state.authenticate,
-  );
+  const { hasError, errorMessage } = useSelector(state => state.authenticate);
 
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
@@ -24,14 +22,6 @@ function LoginForm({ navigation }) {
     reValidateMode: 'onChange',
     defaultValues,
   });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigation.reset({
-        routes: [{ name: 'PlanetsList' }],
-      });
-    }
-  }, [isAuthenticated, navigation]);
 
   const onSubmit = async data => {
     dispatch(loginUser({ data }));

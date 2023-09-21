@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: sizes.xxSmall,
-    padding: sizes.xSmall,
+    padding: sizes.small,
   },
   contained: {
     backgroundColor: colors.primary,

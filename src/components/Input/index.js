@@ -1,12 +1,18 @@
 // Core Packages
 import React, { forwardRef, useEffect, useState } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 
 // Custom Components
 import { colors, sizes } from '../../utils/constants';
 import Label from '../Label';
 import { HidePasswordIcon, ShowPasswordIcon } from '../../assets';
 import { SearchIcon } from '../../assets/icons/searchIcon';
+import { IS_IOS } from '../../utils/helper';
 
 function Input(
   {
@@ -64,7 +70,11 @@ function Input(
           labelFontWeight={sizes.WEIGHT800}
         />
       )}
-      <View style={styles.inputContainer}>
+      <View
+        style={[
+          styles.inputContainer,
+          { paddingVertical: IS_IOS ? sizes.small : 0 },
+        ]}>
         <TextInput
           ref={ref}
           id={id}
@@ -108,9 +118,10 @@ const styles = StyleSheet.create({
   inputContainer: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
     borderColor: colors.borderMedium,
     borderWidth: 1,
-    padding: sizes.xSmall,
+    paddingHorizontal: sizes.xSmall,
     borderRadius: sizes.xxSmall,
   },
   input: {
